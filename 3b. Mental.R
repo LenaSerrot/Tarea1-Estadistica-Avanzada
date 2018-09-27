@@ -1,8 +1,10 @@
-# Instalación de paquetes:
+# InstalaciÃ³n de paquetes:
 install.packages("vcdExtra")
+install.packages("PerformanceAnalytics")
 
-# Carga de las librerías:
+# Carga de las librerÃ­as:
 library(vcdExtra)
+library(PerformanceAnalytics)
 
 # Cargar base de datos:
 data("Mental")
@@ -12,31 +14,30 @@ str(Mental)
 dim (Mental)
 summary(Mental)
 
-#Tabla de frecuencias Estado de salud mental vs Estado socioeconómico de los padres
+#Tabla de frecuencias Estado de salud mental vs Estado socioeconÃ³mico de los padres
 Salud_Mental <- xtabs(Freq ~ ses+mental, data=Mental) 
 Salud_Mental
 
 #Tenemos una tabla de contingencia 6 x 4. 
-#6 niveles socioeconòmicos (ses)= 1:6 
+#6 niveles socioeconÃ²micos (ses)= 1:6 
 #4 estados mentales (mental): Well, Mild, Moderate e Impared
 
-### ASOCIACIÓN
+### ASOCIACIÃ“N
 
-bb<-chisq.test(Salud_Mental)
-bb
+assoc(Salud_Mental,color=TRUE,shade=T,main="mosaico")
 
-#H0 : El estado socioeconómico de los padres y la Salud Mental son independientes 
-#Ha : El estado socioeconómico de los padres esta asociado a la Salud Mental
-#Con un p-value significativo rechazamos la hipotesis nula y aceptamos que hay asociación
+chisq.test(Salud_Mental)
 
+#H0 : El estado socioeconÃ³mico de los padres y la Salud Mental son independientes 
+#Ha : El estado socioeconÃ³mico de los padres esta asociado a la Salud Mental
+#Con un p-value (5.346e-05) significativo rechazamos la hipotesis nula y aceptamos que hay asociaciÃ³n
 
-###3b. ¿Existe una asociación creciente entre este estado de salud mental y el estado socioeconómico de los padres? Justifique su respuesta.
+###3b. Â¿Existe una asociaciÃ³n creciente entre este estado de salud mental y el estado socioeconÃ³mico de los padres? Justifique su respuesta.
 ###Teniendo en cuenta que las dos variables son ordinales. 
-###Se realizará la Prueba Gamma, para poder observar la dirección de la asociación entre las variables.
+###Se realizarÃ¡ la Prueba Gamma, para poder observar la direcciÃ³n de la asociaciÃ³n entre las variables.
 
-GKgamma(table(Mental$ses, Mental$mental))
+GKgamma(Salud_Mental, level = 0.95)
  
-###Según la prueba de Gamma la dirección de la asociación entre las variables estudiadas es positiva.
-
-
-
+###SegÃºn la prueba de Gamma la direcciÃ³n de la asociaciÃ³n entre las variables estudiadas es positiva, osea una ASOCIACIÃ“N CRECIENTE.
+###Con un coeficiente Gamma mÃ¡s prÃ³ximo a +1, se indica que al crecer el estado socioeconÃ³mico de los padres, 
+###CRECE la el estado de salud mental (Desde Well hasta Impaired))
